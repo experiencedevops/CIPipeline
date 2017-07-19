@@ -87,7 +87,11 @@ node(){
    }
    
    stage ('Send Mail'){ 
+      try {
       sendEmail( 'SUCCESS' )
+      } catch (e) {
+         currentBuild.result='FAILED'
+         throw e
    }
 }
 
