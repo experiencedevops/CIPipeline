@@ -83,7 +83,7 @@ node(){
 }
  
  stage('docker build/push') {
-    docker.withRegistry('${docker_registry}', 'GitHub') {
+    docker.withRegistry(${docker_registry}, 'GitHub') {
        def app = docker.build("experiencedevops/customerservice:${commit_id}", '.').push()
      }
    }
