@@ -92,7 +92,9 @@ node(){
       } catch (e) {
          currentBuild.result='FAILED'
          throw e
-   }
+      }
+    }
+  }
 }
 
  /*stage("SonarQube Quality Gate") { 
