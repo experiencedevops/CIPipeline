@@ -17,7 +17,7 @@ relbranch_devops="master"
 relbranch_config="master"
 to_emailid='experiencedigital@gmail.com'
 
-node ('master'){
+node(){
 
    // Mark the code checkout 'stage'....
    def mvnHome = tool 'M3'
