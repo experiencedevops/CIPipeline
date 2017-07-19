@@ -13,14 +13,17 @@ automationRepoDirectory='automation'
 nexusBase = 'http://34.200.232.169:8081/nexus/content/repositories'
 nexus_rest_3='http://34.200.232.169:8081/service/siesta/rest/v1/script'
 nexus_rest='http://34.200.232.169:8081/nexus/service/local/artifact/maven/content'
-relbranch_devops="master"
-relbranch_config="master"
-to_emailid='experiencedigital@gmail.com'
+relbranch_devops='master'
+relbranch_config='master'
+to_emailid='experiencedigtial@gmail.com'
+docker_registry='https://index.docker.io/v1/'
+
 
 node(){
 
    // Mark the code checkout 'stage'....
    def mvnHome = tool 'M3'
+   def commit_id
    
    stage 'Checkout'
    deleteDir() 
@@ -78,6 +81,12 @@ node(){
       throw e
    }
 }
+ 
+ stage('docker build/push') {
+    docker.withRegistry('${docker_registry}', 'GitHub') {
+       def app = docker.build("experiencedevops/customerservice:${commit_id}", '.').push()
+     }
+   }
    
    stage ('Send Mail'){ 
       sendEmail( 'SUCCESS' )
@@ -96,7 +105,10 @@ node(){
 def checkoutscm() {      
    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: "${scmcredId}", usernameVariable: 'bb_userid', passwordVariable: 'bb_password']]) {    
       dir ("${WORKSPACE}") {  	  	      
-              git credentialsId: "${scmcredId}", poll: false, url: "${bbprotocol}://${env.bb_userid}:${env.bb_password}@${appRepo}", branch: "${relbranch_config}"                       
+              git credentialsId: "${scmcredId}", poll: false, url: "${bbprotocol}://${env.bb_userid}:${env.bb_password}@${appRepo}", branch: "${relbranch_config}"
+              sh "git rev-parse --short HEAD > .git/commit-id"                        
+              commit_id = readFile('.git/commit-id').trim()
+              println commit_id
        }   
    }
    
@@ -111,7 +123,7 @@ def sendEmail( Status ) {
     if ( "${Status}" == 'SUCCESS' || "${Status}" == 'UNSTABLE' )
     {        
         /*emailbody = readFile 'builddesc.txt'*/  
-        emailbody   = 'Package Build Successful'
+        emailbody   = 'Package Build Successful. Docker Image with id ${commit_id} has been pushed \n '
         currentBuild.result = "${Status}"
     }  
     else if ( "${Status}" == 'FAILED' )
