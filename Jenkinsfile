@@ -125,7 +125,7 @@ def sendEmail( Status ) {
     if ( "${Status}" == 'SUCCESS' || "${Status}" == 'UNSTABLE' )
     {        
         /*emailbody = readFile 'builddesc.txt'*/  
-        emailbody   = 'Package Build Successful. Docker Image with id ${commit_id} has been pushed \n '
+        emailbody   = 'Build Successful. \n Docker Image has been pushed to experiencedevops/customerservice repository'
         currentBuild.result = "${Status}"
     }  
     else if ( "${Status}" == 'FAILED' )
