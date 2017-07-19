@@ -16,8 +16,6 @@ nexus_rest='http://34.200.232.169:8081/nexus/service/local/artifact/maven/conten
 relbranch_devops='master'
 relbranch_config='master'
 to_emailid='experiencedigtial@gmail.com'
-docker_registry='https://index.docker.io/v1/'
-
 
 node(){
 
@@ -83,7 +81,7 @@ node(){
 }
  
  stage('docker build/push') {
-    docker.withRegistry(${docker_registry}, 'GitHub') {
+    docker.withRegistry('https://index.docker.io/v1/', 'GitHub') {
        def app = docker.build("experiencedevops/customerservice:${commit_id}", '.').push()
      }
    }
