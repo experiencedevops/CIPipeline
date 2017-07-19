@@ -15,7 +15,7 @@ nexus_rest_3='http://34.200.232.169:8081/service/siesta/rest/v1/script'
 nexus_rest='http://34.200.232.169:8081/nexus/service/local/artifact/maven/content'
 relbranch_devops='master'
 relbranch_config='master'
-to_emailid='experiencedigtial@gmail.com'
+to_emailid='experiencedigitial@gmail.com'
 
 node(){
 
