@@ -86,15 +86,13 @@ node(){
      }
    }
    
-   stage ('Send Mail'){ 
+stage 'Send Mail' 
       try {
       sendEmail( 'SUCCESS' )
-      } catch (e) {
+    } catch (e) {
          currentBuild.result='FAILED'
          throw e
-      }
-    }
-  }
+     }
 }
 
  /*stage("SonarQube Quality Gate") { 
